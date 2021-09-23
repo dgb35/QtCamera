@@ -1,4 +1,0 @@
-ToolSet: w64 6.0 (local)@C:\Tools\mingw\mingw32
-Options: 
-
-Options:-DCMAKE_PREFIX_PATH=C:\Qt\5.15.2\mingw81_32\lib\cmake
