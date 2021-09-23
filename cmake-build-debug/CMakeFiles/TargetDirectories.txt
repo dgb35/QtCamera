@@ -1,0 +1,4 @@
+C:/Users/danylo.hrobovyi/CLionProjects/qt-streaming/cmake-build-debug/CMakeFiles/qt_streaming.dir
+C:/Users/danylo.hrobovyi/CLionProjects/qt-streaming/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/danylo.hrobovyi/CLionProjects/qt-streaming/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/danylo.hrobovyi/CLionProjects/qt-streaming/cmake-build-debug/CMakeFiles/qt_streaming_autogen.dir
