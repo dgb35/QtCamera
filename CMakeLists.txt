@@ -3,6 +3,10 @@ project(qtgstreamer)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 include(ExternalProject)
 
 macro (generate_qt_libs)
@@ -63,6 +67,8 @@ add_executable(qtgstreamer
 
         qml/main.qrc
 )
+
+target_include_directories(qtgstreamer PRIVATE include/)
 
 add_dependencies(qtgstreamer libqt5gstreamer)
 target_link_directories(qtgstreamer PRIVATE ${LOCAL_INSTALL_PREFIX}/lib)

@@ -22,7 +22,3 @@ void Camera::start(QPointer<VideoSurface> videoSurface) {
                      Qt::QueuedConnection);
     _camera->start();
 }
-
-Camera::~Camera() {
-}
-

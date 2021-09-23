@@ -13,7 +13,6 @@
 class Camera : public QObject {
 public:
     explicit Camera(QObject *parent = nullptr);
-    ~Camera() override;
 
     void start(QPointer<VideoSurface> videoSurface);
 
