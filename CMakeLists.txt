@@ -6,8 +6,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-set(CMAKE_PREFIX_PATH "/home/dgb/Qt/5.15.2/gcc_64/lib/cmake")
-
 find_package(Qt5 COMPONENTS
         Core
         Network
