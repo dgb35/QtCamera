@@ -1,8 +1,9 @@
-#include "../include/video_surface.hpp"
+#include <video_surface.hpp>
 
-#include <QDebug>
 #include <chrono>
 #include <iostream>
+
+#include <QDebug>
 
 VideoSurface::VideoSurface() : surface_{nullptr} {}
 
@@ -35,13 +36,14 @@ void VideoSurface::setFormat(int width, int height,
 
 void VideoSurface::setFrame(const QVideoFrame &frame) {
     if (surface_.get()) {
-        auto start = std::chrono::system_clock::now();
-        auto f = const_cast<QVideoFrame&>(frame);
+//        auto start = std::chrono::system_clock::now();
+        auto f(frame);
         f.map(QAbstractVideoBuffer::ReadOnly);
         setFormat(f.width(), f.height(), QVideoFrame::pixelFormatFromImageFormat(f.image().format()));
         surface_->present(f.image());
         f.unmap();
-        auto end = std::chrono::system_clock::now();
-        std::cout << std::chrono::duration_cast<std::chrono::milliseconds>((end - start)).count() << std::endl;
+//        auto end = std::chrono::system_clock::now();
+//        std::cout << "Frame time: " << std::chrono::duration_cast<std::chrono::milliseconds>((end - start)).count()
+//                  << "ms" << std::endl;
     }
 }

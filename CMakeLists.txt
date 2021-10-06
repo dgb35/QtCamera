@@ -19,11 +19,14 @@ add_executable(qt_streaming
         src/main.cpp
 
         src/video_surface.cpp
-        src/camera.cpp
         include/video_surface.hpp
+        src/camera.cpp
         include/camera.hpp
 
+        include/images.hpp
+
         qml/main.qrc
+
 )
 
 target_link_libraries(qt_streaming

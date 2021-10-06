@@ -1,10 +1,9 @@
-#include "../include/camera.hpp"
+#include <camera.hpp>
 
 #include <memory>
+#include <utility>
 
-Camera::Camera(QObject *parent) : QObject(parent), _camera{nullptr}, _probe{nullptr}, _videoSurface{nullptr} {}
-
-void Camera::start(QPointer<VideoSurface> videoSurface) {
+Camera::Camera(QPointer<VideoSurface> videoSurface, QObject *parent) : QObject(parent), _camera{nullptr}, _probe{nullptr}, _videoSurface{std::move(videoSurface)} {
     _camera = std::make_unique<QCamera>();
     _probe = std::make_unique<QVideoProbe>();
 
@@ -17,12 +16,22 @@ void Camera::start(QPointer<VideoSurface> videoSurface) {
     _camera->setViewfinderSettings(settings);
 
     _probe->setSource(_camera.get());
-    qDebug() << videoSurface->videoSurface();
-    QObject::connect(_probe.get(), &QVideoProbe::videoFrameProbed, videoSurface, &VideoSurface::setFrame,
+    QObject::connect(_probe.get(), &QVideoProbe::videoFrameProbed, _videoSurface, &VideoSurface::setFrame,
                      Qt::QueuedConnection);
-    _camera->start();
+
+    connect(_camera.get(), &QCamera::stateChanged, this, &Camera::stateChanged);
+}
+
+void Camera::start() {
+    if (_camera->state() != QCamera::ActiveState)
+        _camera->start();
+}
+
+void Camera::stop() {
+    if (_camera->state() == QCamera::ActiveState)
+        _camera->stop();
 }
 
 Camera::~Camera() {
+    stop();
 }
-

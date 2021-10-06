@@ -5,20 +5,25 @@
 
 #include <camera.hpp>
 #include <video_surface.hpp>
+#include <images.hpp>
+#include <random>
 
-constexpr auto mainPanelName = "mainPanel";
 constexpr auto videoSurfaceName = "display";
 
 static QPointer<VideoSurface> getSurfaceElement(QPointer<QObject> rootObject) {
-    QPointer<QObject> display(
-            rootObject->findChild<QObject *>(mainPanelName)
-                    ->findChild<QObject *>(videoSurfaceName));
+    QPointer<QObject> display(rootObject->findChild<QObject *>(videoSurfaceName, Qt::FindChildrenRecursively));
     QPointer<VideoSurface> surface{qvariant_cast<VideoSurface *>(display->property("source"))};
     return surface;
 }
 
 int main(int argc, char *argv[]) {
+    std::random_device rd;
+    std::mt19937 mersenne(rd());
+
     QGuiApplication a(argc, argv);
+
+    ImageStorage storage;
+    storage.loadImages(R"(../qml/images)");
 
     QQmlApplicationEngine engine;
 
@@ -31,15 +36,18 @@ int main(int argc, char *argv[]) {
     }
 
     QPointer<QObject> root(engine.rootObjects().first());
-
     auto surface = getSurfaceElement(root);
+    QObject::connect(&a, &QGuiApplication::aboutToQuit, [&surface]() {
+        surface.clear();
+    });
     root.clear();
 
-    Camera camera;
-    camera.start(surface);
+    Camera camera(surface);
+    engine.rootContext()->setContextProperty("camera", &camera);
 
-    QObject::connect(&a, &QGuiApplication::aboutToQuit, [&surface](){
-        surface.clear();
+    QObject::connect(&camera, &Camera::stateChanged, [&storage, &surface, &mersenne](QCamera::State state) {
+        if(state != QCamera::ActiveState)
+            surface->setFrame(storage.images[static_cast<int>(mersenne() % storage.images.size())]);
     });
 
     return QGuiApplication::exec();

@@ -11,11 +11,17 @@
 #include "video_surface.hpp"
 
 class Camera : public QObject {
+Q_OBJECT
 public:
-    explicit Camera(QObject *parent = nullptr);
+    explicit Camera(QPointer<VideoSurface> videoSurface, QObject *parent = nullptr);
     ~Camera() override;
 
-    void start(QPointer<VideoSurface> videoSurface);
+public slots:
+    void start();
+    void stop();
+
+signals:
+    void stateChanged(QCamera::State);
 
 protected:
     std::unique_ptr<QCamera> _camera;
