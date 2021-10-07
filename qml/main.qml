@@ -38,10 +38,11 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
             width: 250
             height: 60
-
+            color: "black"
             RowLayout {
                 anchors.fill: parent
-                spacing: 0
+                spacing: 1
+
                 Button {
                     id: start
                     width: 100

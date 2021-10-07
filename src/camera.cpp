@@ -34,4 +34,6 @@ void Camera::stop() {
 
 Camera::~Camera() {
     stop();
+    _camera.reset(nullptr);
+    _probe.reset(nullptr);
 }

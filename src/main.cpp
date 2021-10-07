@@ -17,8 +17,6 @@ static QPointer<VideoSurface> getSurfaceElement(QPointer<QObject> rootObject) {
 }
 
 int main(int argc, char *argv[]) {
-    std::random_device rd;
-    std::mt19937 mersenne(rd());
 
     QGuiApplication a(argc, argv);
 
@@ -45,6 +43,8 @@ int main(int argc, char *argv[]) {
     Camera camera(surface);
     engine.rootContext()->setContextProperty("camera", &camera);
 
+    std::random_device rd;
+    std::mt19937 mersenne(rd());
     QObject::connect(&camera, &Camera::stateChanged, [&storage, &surface, &mersenne](QCamera::State state) {
         if(state != QCamera::ActiveState)
             surface->setFrame(storage.images[static_cast<int>(mersenne() % storage.images.size())]);
